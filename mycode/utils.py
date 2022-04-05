@@ -49,3 +49,43 @@ zz = d_old['df'].copy()
 d_old.close()
 get_days_diff(zz, periods = -1)
 '''
+
+#----    smart_fillna    ----#
+
+def smart_fillna(data, column):
+    '''
+    Substitute NaN with the mean yesterday and tomorrow values  
+    '''
+    nan_index = data[data[column].isna()].index
+
+    for i in nan_index:
+        # Test if there are values for yesterday and tomorrow (up to two days difference)
+        my_test = (data.loc[i]['DiffPrev'] <= 2) & (data.loc[i]['DiffNext'] <= 2) & (data.loc[i]['DiffPrev'] != 0) & (data.loc[i]['DiffNext'] != 0) 
+        
+        # skip dates that have no yesterday and tomorrow
+        if my_test == False:  # my_test is False do not work why?!?
+            continue
+
+        # Compute today value as mean yesterday and tomorrow values
+        yesterday_val = data.loc[i-1][column]
+        tomorrow_val = data.loc[i+1][column]
+
+        today_val = np.mean([yesterday_val, tomorrow_val])
+
+        data.loc[i, column] = today_val
+    
+
+'''
+import shelve
+
+
+# get data
+d_old = shelve.open("outputs/01_data_explore")
+zz = d_old['df'].copy()
+d_old.close()
+
+my_index = zz[zz['MinTemp'].isna()].index
+zz.loc[my_index]
+
+smart_fillna(zz, 'MinTemp')
+'''
