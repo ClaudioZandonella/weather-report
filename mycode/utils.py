@@ -5,7 +5,7 @@
 import shelve
 import numpy as np
 import pandas as pd
-
+from sklearn.metrics import confusion_matrix, classification_report, fbeta_score
 
 #----    my_count    ----
 
@@ -89,3 +89,36 @@ zz.loc[my_index]
 
 smart_fillna(zz, 'MinTemp')
 '''
+
+#----    get_fbeta_score    ----
+
+def get_fbeta_score(true_y, pred_y):
+    '''
+    get values of f2 for clas 0, class 1, and average (macro and weighted)
+    '''
+
+    values = {
+        'fbeta0' : fbeta_score(true_y, pred_y, pos_label = 0, beta = 2),
+        'fbeta1' : fbeta_score(true_y, pred_y, pos_label = 1, beta = 2),
+        'fbeta_macro' : fbeta_score(true_y, pred_y, average = 'macro', beta = 2),
+        'fbeta_weight' : fbeta_score(true_y, pred_y, average = 'weighted', beta = 2),
+    }
+    
+    
+    return pd.DataFrame(values, index = ['0'])
+
+
+
+#----    get_score_report    ----#
+
+def get_score_report(classifier, true_y, true_X):
+    '''
+    Get info score including confsion matrix, classification report, and f2 values
+    '''
+
+    y_pred = classifier.predict(true_X)
+    print(confusion_matrix(true_y, y_pred))
+    print(classification_report(true_y, y_pred))
+    print(get_fbeta_score(true_y, y_pred))
+
+    return None
