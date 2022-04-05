@@ -237,10 +237,11 @@ df_corr[abs(df_corr) > .6]
 
 #----    04 Descriptive Dates    ----#
 
+#%%
 # Get Date values separately
 df['Year'] = df['Date'].dt.year
 df['Month'] = df['Date'].dt.month
-df['Day'] = df['Date'].dt.day
+df['Week'] = df['Date'].dt.isocalendar().week
 
 # %%
 
