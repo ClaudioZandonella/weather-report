@@ -122,3 +122,19 @@ def get_score_report(classifier, true_y, true_X):
     print(get_fbeta_score(true_y, y_pred))
 
     return None
+
+#----    get_coef_importance    ----#
+
+def get_coef_importance(classifier, col_names):
+    '''
+    Given the clasisfier return dict of coef ordered for importance (absolute value)
+    '''
+
+    old_shape = classifier.coef_.shape
+    coeff_val = classifier.coef_.reshape(old_shape[1])
+    coeff = dict(zip(col_names, coeff_val))
+
+    coeff = {k: v for k, v in \
+        sorted(coeff.items(), key=lambda item: abs(item[1]), reverse=True)}
+    
+    return coeff

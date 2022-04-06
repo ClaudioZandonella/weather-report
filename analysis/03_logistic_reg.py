@@ -28,12 +28,13 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, classification_report, fbeta_score,\
-    PrecisionRecallDisplay, make_scorer
+    PrecisionRecallDisplay, make_scorer, precision_recall_curve, average_precision_score
 from sklearn.model_selection import KFold, GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 import utils  # from mycode
+import myPlots  # from mycode
 
 # get data
 
@@ -197,6 +198,7 @@ display = PrecisionRecallDisplay.from_estimator(
     best_fit_logistic, logistic_X, logistic_y, name="Best Model"
 )
 
+# %%
 
 #----    05 Encode Data Advanced Feature   ----#
 
@@ -350,25 +352,37 @@ display = PrecisionRecallDisplay.from_estimator(
 utils.get_score_report(best_fit_logistic, logistic_y_test, logistic_X_test)
 
 # %%
-# Precision-Recall Plot
-display = PrecisionRecallDisplay.from_estimator(
-    best_fit_logistic, logistic_X_test, logistic_y_test, name="Simple Model"
-)
-
-# %%
 # 'Advanced' model on test data
 utils.get_score_report(best_fit_logistic_adv, logistic_y_test, logistic_X_test_adv)
 
-# %%
-# Precision-Recall Plot
-display = PrecisionRecallDisplay.from_estimator(
-    best_fit_logistic_adv, logistic_X_test_adv, logistic_y_test, name="Adv Model"
-)
-
-
 # The model 'advanced' is slightly slightly bettter
 
-#%%
+# %%
+# Precision-Recall Plot
+
+myPlots.plot_precision_recall(
+    list_classifier = [best_fit_logistic, best_fit_logistic_adv],
+    list_X =[logistic_X_test, logistic_X_test_adv],
+    true_y = logistic_y_test,
+    list_names = ['Simple Model', 'Adv Model'], 
+    pos_label = 1
+)
+
+# %% 
+# Check Models Coefficient 
+utils.get_coef_importance(
+    classifier = best_fit_logistic,
+    col_names = logistic_X_test.columns
+    )
+
+# %% 
+# Check Models Coefficient 
+utils.get_coef_importance(
+    classifier = best_fit_logistic_adv,
+    col_names = logistic_X_test_adv.columns
+    )
+
+# %%
 
 #----    10 End Logistic    ----#
 
