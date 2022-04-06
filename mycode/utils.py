@@ -138,3 +138,19 @@ def get_coef_importance(classifier, col_names):
         sorted(coeff.items(), key=lambda item: abs(item[1]), reverse=True)}
     
     return coeff
+
+#----    get_feature_importance    ----#
+
+def get_feature_importance(classifier, col_names):
+    '''
+    Given the clasisfier return dict of feaatures ordered for importance (absolute value)
+    '''
+    feat = dict(zip(
+        col_names, 
+        classifier.feature_importances_
+        ))
+
+    feat = {k: v for k, v in \
+        sorted(feat.items(), key=lambda item: item[1], reverse=True)}
+    
+    return feat 

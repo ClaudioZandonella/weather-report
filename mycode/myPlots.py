@@ -40,17 +40,35 @@ def plot_precision_recall(list_classifier, list_X, true_y, list_names, pos_label
     for i in range(len(list_classifier)):
 
         y_pred_prob = list_classifier[i].predict_proba(list_X[i])
-        y_pred = list_classifier[i].predict(list_X[i])
-        f2_score = fbeta_score(true_y, y_pred, pos_label = pos_label, beta = 2)
+        ap_score = average_precision_score(true_y, y_pred_prob[:, pos_label])
         precision, recall, _ = precision_recall_curve(true_y, y_pred_prob[:, pos_label])
 
         display = PrecisionRecallDisplay(
-            recall=recall,
-            precision=precision
+            recall = recall,
+            precision = precision,
+            average_precision = ap_score
         )
-        display.plot(ax=ax, name=f"Precision-recall for {list_names[i]} (F2 {f2_score:.2f})")
+        display.plot(ax=ax, name=f"Precision-recall for {list_names[i]}")
 
     ax.set_xlabel(f'Recall (Positive label: {pos_label})')
     ax.set_ylabel(f'Precision (Positive label: {pos_label})')
 
+#----    plot_grid_tree    ----
+
+def plot_grid_tree(grid_tree):
+    class_weights = grid_tree['param_class_weight'].value_counts().index
+    depths = sorted(grid_tree['param_max_depth'].unique())
+
+    fig, ax = plt.subplots(1,1, figsize=(15,5))
+    for i in class_weights:
+        cv_scores_mean = grid_tree[grid_tree['param_class_weight'] == i].\
+            sort_values(by=['param_max_depth'])['mean_test_score']
+        cv_scores_std = grid_tree[grid_tree['param_class_weight'] == i].\
+            sort_values(by=['param_max_depth'])['std_test_score']
+        
+        ax.plot(depths, cv_scores_mean, '-o', label=f'Class Weigths: {i}', alpha=0.9)
+        ax.fill_between(depths, cv_scores_mean-2*cv_scores_std, cv_scores_mean+2*cv_scores_std, alpha=0.1)
+    ax.set_xlabel('Tree depth')
+    ax.set_ylabel('F2 (Positive label: 1)')
+    ax.legend()
 
