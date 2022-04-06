@@ -388,10 +388,18 @@ utils.get_coef_importance(
 
 # Save Objects
 d = shelve.open("../outputs/03_logistic_reg")
+
+# Training Data
+d['logistic_X'] = logistic_X
+d['logistic_X_adv'] = logistic_X_adv
+d['logistic_y'] = logistic_y
+
+# Test Data
 d['logistic_X_test'] = logistic_X_test
 d['logistic_X_test_adv'] = logistic_X_test_adv
 d['logistic_y_test'] = logistic_y_test
 
+# Models
 d['best_fit_logistic'] = best_fit_logistic
 d['best_fit_logistic_adv'] = best_fit_logistic_adv
 d.close()
