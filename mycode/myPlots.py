@@ -72,3 +72,18 @@ def plot_grid_tree(grid_tree):
     ax.set_ylabel('F2 (Positive label: 1)')
     ax.legend()
 
+#----    plot_oobf2    ----#
+
+def plot_oobf2(f2_rates):
+    # Generate the OOB F2 vs. number of trees
+    _, ax = plt.subplots(figsize=(7, 5))
+    
+    for label, clf_f2 in f2_rates.items():
+        xs, ys = zip(*clf_f2)
+        plt.plot(xs, ys, label=label)
+
+    plt.xlabel("n trees")
+    plt.ylabel("F2")
+    plt.legend(loc="lower right")
+    plt.show()
+
