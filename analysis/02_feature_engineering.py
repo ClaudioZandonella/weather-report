@@ -90,7 +90,7 @@ cols_to_mean = [colname for colname in numeric_columns if \
 trimmed_means_val = df_train.groupby('Location')[cols_to_mean].aggregate(
     lambda x: stats.trim_mean(x[x.notna()],  proportiontocut=.05))
 
-# Get median vaalues
+# Get median values
 median_val = df_train.groupby('Location')[cols_to_median].aggregate(np.nanmedian)
 
 reference_values = pd.concat([trimmed_means_val, median_val], axis=1)

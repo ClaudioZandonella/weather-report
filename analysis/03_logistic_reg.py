@@ -34,6 +34,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import utils  # from mycode
+import myStats # from mycode 
 import myPlots  # from mycode
 
 # get data
@@ -122,7 +123,7 @@ fit_logistic = LogisticRegression(
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(fit_logistic, logistic_y, logistic_X)
+myStats.get_score_report(fit_logistic, logistic_y, logistic_X)
 
 # %%
 # Precision-Recall Plot
@@ -190,7 +191,7 @@ best_fit_logistic = grid_logistic.best_estimator_
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(best_fit_logistic, logistic_y, logistic_X)
+myStats.get_score_report(best_fit_logistic, logistic_y, logistic_X)
 
 # %%
 # Precision-Recall Plot
@@ -266,7 +267,7 @@ fit_logistic_adv = LogisticRegression(
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
 # So advance that is worse than before 
-utils.get_score_report(fit_logistic_adv, logistic_y, logistic_X_adv) 
+myStats.get_score_report(fit_logistic_adv, logistic_y, logistic_X_adv) 
 
 
 # %%
@@ -336,7 +337,7 @@ best_fit_logistic_adv = grid_logistic_adv.best_estimator_
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(best_fit_logistic_adv, logistic_y, logistic_X_adv)
+myStats.get_score_report(best_fit_logistic_adv, logistic_y, logistic_X_adv)
 
 # %%
 # Precision-Recall Plot
@@ -349,11 +350,11 @@ display = PrecisionRecallDisplay.from_estimator(
 #----    09 Models Comparison    ----#
 
 # 'Simple' model on test data
-utils.get_score_report(best_fit_logistic, logistic_y_test, logistic_X_test)
+myStats.get_score_report(best_fit_logistic, logistic_y_test, logistic_X_test)
 
 # %%
 # 'Advanced' model on test data
-utils.get_score_report(best_fit_logistic_adv, logistic_y_test, logistic_X_test_adv)
+myStats.get_score_report(best_fit_logistic_adv, logistic_y_test, logistic_X_test_adv)
 
 # The model 'advanced' is slightly slightly bettter
 
@@ -370,7 +371,7 @@ myPlots.plot_precision_recall(
 
 # %% 
 # Check Models Coefficient 
-best_coef = utils.get_coef_importance(
+best_coef = myStats.get_coef_importance(
     classifier = best_fit_logistic,
     col_names = logistic_X_test.columns
     )
@@ -382,7 +383,7 @@ best_coef
 
 # %% 
 # Check Models Coefficient 
-best_coef_adv = utils.get_coef_importance(
+best_coef_adv = myStats.get_coef_importance(
     classifier = best_fit_logistic_adv,
     col_names = logistic_X_test_adv.columns
     )

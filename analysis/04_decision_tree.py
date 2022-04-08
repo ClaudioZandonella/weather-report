@@ -34,6 +34,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import utils  # from mycode
+import myStats # from mycode
 import myPlots  # from mycode
 
 # get data
@@ -124,7 +125,7 @@ fit_tree = tree.DecisionTreeClassifier(
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(fit_tree, tree_y, tree_X)
+myStats.get_score_report(fit_tree, tree_y, tree_X)
 
 # %%
 # Precision-Recall Plot
@@ -195,7 +196,7 @@ best_fit_tree = grid_tree.best_estimator_
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(best_fit_tree, tree_y, tree_X)
+myStats.get_score_report(best_fit_tree, tree_y, tree_X)
 
 # %%
 # Precision-Recall Plot
@@ -210,7 +211,7 @@ annotations = tree.plot_tree(best_fit_tree, feature_names = tree_X.columns, fill
 
 #%%
 # Check Features
-best_features = utils.get_feature_importance(best_fit_tree, tree_X.columns)
+best_features = myStats.get_feature_importance(best_fit_tree, tree_X.columns)
 
 # Plot Features
 sns.barplot(data = best_features.head(10), x = 'importance', y = 'feature')
@@ -299,7 +300,7 @@ fit_tree_adv = tree.DecisionTreeClassifier(
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(fit_tree_adv, tree_y, tree_X_adv)
+myStats.get_score_report(fit_tree_adv, tree_y, tree_X_adv)
 
 # %%
 # Precision-Recall Plot
@@ -371,7 +372,7 @@ best_fit_tree_adv = grid_tree_adv.best_estimator_
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(best_fit_tree_adv, tree_y, tree_X_adv)
+myStats.get_score_report(best_fit_tree_adv, tree_y, tree_X_adv)
 
 # %%
 # Precision-Recall Plot
@@ -386,7 +387,7 @@ annotations = tree.plot_tree(best_fit_tree_adv, feature_names = tree_X_adv.colum
 
 #%%
 # Check Features
-best_features_adv = utils.get_feature_importance(best_fit_tree_adv, tree_X_adv.columns)
+best_features_adv = myStats.get_feature_importance(best_fit_tree_adv, tree_X_adv.columns)
 
 # Plot Features
 sns.barplot(data = best_features_adv.head(10), x = 'importance', y = 'feature')
@@ -397,11 +398,11 @@ best_features_adv
 #----    09 Models Comparison    ----#
 
 # 'Simple' model on test data
-utils.get_score_report(best_fit_tree, tree_y_test, tree_X_test)
+myStats.get_score_report(best_fit_tree, tree_y_test, tree_X_test)
 
 # %%
 # 'Advanced' model on test data
-utils.get_score_report(best_fit_tree_adv, tree_y_test, tree_X_test_adv)
+myStats.get_score_report(best_fit_tree_adv, tree_y_test, tree_X_test_adv)
 
 # The model 'advanced' is slightly slightly bettter
 
@@ -418,14 +419,14 @@ myPlots.plot_precision_recall(
 
 # %% 
 # Check Models feature importance 
-utils.get_feature_importance(
+myStats.get_feature_importance(
     classifier = best_fit_tree,
     col_names = tree_X_test.columns
     )
 
 # %% 
 # Check Models feature importance 
-utils.get_feature_importance(
+myStats.get_feature_importance(
     classifier = best_fit_tree_adv,
     col_names = tree_X_test_adv.columns
     )

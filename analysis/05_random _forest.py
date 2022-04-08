@@ -35,6 +35,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import utils  # from mycode
+import myStats # from mycode
 import myPlots  # from mycode
 
 # get data
@@ -82,7 +83,7 @@ fit_forest = RandomForestClassifier(
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(fit_forest, forest_y, forest_X)
+myStats.get_score_report(fit_forest, forest_y, forest_X)
 
 # %%
 # Precision-Recall Plot
@@ -91,7 +92,7 @@ display = PrecisionRecallDisplay.from_estimator(
 )
 
 #%%
-features = utils.get_feature_importance(fit_forest, forest_X.columns)
+features = myStats.get_feature_importance(fit_forest, forest_X.columns)
 features
 
 # %%
@@ -101,35 +102,35 @@ sns.barplot(data = features.head(10), x = 'importance', y = 'feature')
 
 #----    03 Grid Search    ----#
 
-ensemble_forests = utils.get_grid_forests(
+ensemble_forests = myStats.get_grid_forests(
     class_weights=[{0:1, 1:3.5}],
     max_features= [10, 20],
     max_depth = [5, 10, 15],
     random_state=2022
     )
 
-ensemble_forests_II = utils.get_grid_forests(
+ensemble_forests_II = myStats.get_grid_forests(
     class_weights=[{0:1, 1:3.5}],
     max_features= [10, 20],
     max_depth = [8, 10, 12],
     random_state=2022
     )
 
-ensemble_forests_III = utils.get_grid_forests(
+ensemble_forests_III = myStats.get_grid_forests(
     class_weights=[{0:1, 1:3.5}, {0:1, 1:5}, {0:1, 1:7}],
     max_features= [20, 40],
     max_depth = [10],
     random_state=2022
     )
 
-ensemble_forests_IV = utils.get_grid_forests(
+ensemble_forests_IV = myStats.get_grid_forests(
     class_weights=[{0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}],
     max_features= [40, 60],
     max_depth = [10],
     random_state=2022
     )
 
-ensemble_forests_V = utils.get_grid_forests(
+ensemble_forests_V = myStats.get_grid_forests(
     class_weights=[{0:1, 1:7}],
     max_features= [40],
     max_depth = [10, 11, 12],
@@ -141,7 +142,7 @@ ensemble_forests_V = utils.get_grid_forests(
 %%time
 # No  big improvements after 350
 my_range = range(360, 400 + 1, 20)
-oobf2_rates= utils.get_oobf2_rates(ensemble_forests_V, my_range, forest_X, forest_y)
+oobf2_rates= myStats.get_oobf2_rates(ensemble_forests_V, my_range, forest_X, forest_y)
 
 # %%
 
@@ -162,7 +163,7 @@ best_fit_forest = RandomForestClassifier(
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(best_fit_forest, forest_y, forest_X)
+myStats.get_score_report(best_fit_forest, forest_y, forest_X)
 
 # %%
 # Precision-Recall Plot
@@ -171,7 +172,7 @@ display = PrecisionRecallDisplay.from_estimator(
 )
 
 #%%
-best_features = utils.get_feature_importance(best_fit_forest, forest_X.columns)
+best_features = myStats.get_feature_importance(best_fit_forest, forest_X.columns)
 best_features
 
 # %%
@@ -208,7 +209,7 @@ fit_forest_adv = RandomForestClassifier(
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(fit_forest_adv, forest_y, forest_X_adv)
+myStats.get_score_report(fit_forest_adv, forest_y, forest_X_adv)
 
 # %%
 # Precision-Recall Plot
@@ -218,7 +219,7 @@ display = PrecisionRecallDisplay.from_estimator(
 
 #%%
 # Check feature
-features_adv = utils.get_feature_importance(fit_forest_adv, forest_X_adv.columns)
+features_adv = myStats.get_feature_importance(fit_forest_adv, forest_X_adv.columns)
 features_adv
 
 # %%
@@ -229,35 +230,35 @@ sns.barplot(data = features_adv.head(10), x = 'importance', y = 'feature')
 
 #----    07 Grid Search Advancedd    ----#
 
-ensemble_forests = utils.get_grid_forests(
+ensemble_forests = myStats.get_grid_forests(
     class_weights=[{0:1, 1:7}],
     max_features= [10, 20],
     max_depth = [5, 10, 15],
     random_state=2022
     )
 
-ensemble_forests_II = utils.get_grid_forests(
+ensemble_forests_II = myStats.get_grid_forests(
     class_weights=[{0:1, 1:7}],
     max_features= [10],
     max_depth = [14, 15, 16],
     random_state=2022
     )
 
-ensemble_forests_III = utils.get_grid_forests(
+ensemble_forests_III = myStats.get_grid_forests(
     class_weights=[{0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}],
     max_features= [10],
     max_depth = [15],
     random_state=2022
     )
 
-ensemble_forests_IV = utils.get_grid_forests(
+ensemble_forests_IV = myStats.get_grid_forests(
     class_weights=[{0:1, 1:7}],
     max_features= [20, 30, 40],
     max_depth = [10],
     random_state=2022
     )
 
-ensemble_forests_V = utils.get_grid_forests(
+ensemble_forests_V = myStats.get_grid_forests(
     class_weights=[{0:1, 1:7}],
     max_features= [40],
     max_depth = [10, 12, 14],
@@ -269,7 +270,7 @@ ensemble_forests_V = utils.get_grid_forests(
 %%time
 # No  big improvements after 350
 my_range = range(360, 400 + 1, 20)
-oobf2_rates= utils.get_oobf2_rates(ensemble_forests_V, my_range, forest_X, forest_y)
+oobf2_rates= myStats.get_oobf2_rates(ensemble_forests_V, my_range, forest_X, forest_y)
 
 # %%
 
@@ -278,7 +279,7 @@ myPlots.plot_oobf2(oobf2_rates)
 # %%
 
 %%time
-#----    04 Best Model    ----#
+#----    08 Best Model    ----#
 
 # 'max_depth': 12;    'class_weight': {0:1, 1:7}; 'max_features' = 40
 best_fit_forest_adv = RandomForestClassifier(
@@ -290,7 +291,7 @@ best_fit_forest_adv = RandomForestClassifier(
 
 #%%
 # Get info score including confsion matrix, classification report, and f2 values
-utils.get_score_report(best_fit_forest_adv, forest_y, forest_X_adv)
+myStats.get_score_report(best_fit_forest_adv, forest_y, forest_X_adv)
 
 # %%
 # Precision-Recall Plot
@@ -300,7 +301,7 @@ display = PrecisionRecallDisplay.from_estimator(
 
 #%%
 # Check Features
-best_features_adv = utils.get_feature_importance(best_fit_forest_adv, forest_X_adv.columns)
+best_features_adv = myStats.get_feature_importance(best_fit_forest_adv, forest_X_adv.columns)
 best_features_adv
 
 # %%
@@ -311,11 +312,11 @@ sns.barplot(data = best_features_adv.head(10), x = 'importance', y = 'feature')
 #----    09 Models Comparison    ----#
 
 # 'Simple' model on test data
-utils.get_score_report(best_fit_forest, forest_y_test, forest_X_test)
+myStats.get_score_report(best_fit_forest, forest_y_test, forest_X_test)
 
 # %%
 # 'Advanced' model on test data
-utils.get_score_report(best_fit_forest_adv, forest_y_test, forest_X_test_adv)
+myStats.get_score_report(best_fit_forest_adv, forest_y_test, forest_X_test_adv)
 
 # The model 'advanced' is slightly slightly bettter
 
@@ -332,14 +333,14 @@ myPlots.plot_precision_recall(
 
 # %% 
 # Check Models feature importance 
-utils.get_feature_importance(
+myStats.get_feature_importance(
     classifier = best_fit_forest,
     col_names = forest_X_test.columns
     )
 
 # %% 
 # Check Models feature importance 
-utils.get_feature_importance(
+myStats.get_feature_importance(
     classifier = best_fit_forest_adv,
     col_names = forest_X_test_adv.columns
     )
