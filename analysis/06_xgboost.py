@@ -432,7 +432,7 @@ grid_xgb_adv.fit(xgb_X_adv, xgb_y)
 # Check Results
 grid_xgb_result_adv = pd.DataFrame(grid_xgb_adv.cv_results_).sort_values(by=['rank_test_score'])
 
-sns.pointplot(data = grid_xgb_result_adv, y = 'mean_test_score', x = 'param_n_estimators',
+sns.pointplot(data = grid_xgb_result_adv, y = 'mean_test_score', x = 'param_scale_pos_weight',
               hue = 'param_gamma')
 
 grid_xgb_result_adv
