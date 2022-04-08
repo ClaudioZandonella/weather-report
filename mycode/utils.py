@@ -5,10 +5,7 @@
 import shelve
 import numpy as np
 import pandas as pd
-import itertools
-from collections import OrderedDict
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import confusion_matrix, classification_report, fbeta_score
+from sklearn.preprocessing import OneHotEncoder
 
 #----    my_count    ----
 
@@ -92,4 +89,35 @@ zz.loc[my_index]
 
 smart_fillna(zz, 'MinTemp')
 '''
+
+#----    get_encoded_data    ----#
+
+def get_encoded_data(df_train, df_test, categ_var, numeric_var):
+    '''
+    return X, X_test, y_test with selected numeric column and 
+    categorical columns encoded with OneHotEncoder
+    '''
+    # Create encoder
+    var_encoder = OneHotEncoder(categories='auto', sparse = False)
+    var_encoder.fit(df_test[categ_var])
+
+    encoded_columns = var_encoder.get_feature_names_out(categ_var)
+
+    # Get encoded categorical data
+    encoded_data = var_encoder.transform(df_train[categ_var])
+    encoded_data = pd.DataFrame(encoded_data, columns = encoded_columns, index = df_train.index)
+
+    # Train data
+    X = pd.concat([df_train[numeric_var], encoded_data], axis=1)
+
+    # Encode test data
+
+    # Get encoded categorical data test
+    encoded_data_test = var_encoder.transform(df_test[categ_var])
+    encoded_data_test = pd.DataFrame(encoded_data_test, columns = encoded_columns, index = df_test.index)
+
+    # Test data
+    X_test = pd.concat([df_test[numeric_var], encoded_data_test], axis=1)
+
+    return (X, X_test)
 

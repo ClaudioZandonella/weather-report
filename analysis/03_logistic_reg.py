@@ -23,12 +23,9 @@ sys.path.append('../mycode')
 
 import numpy as np
 import pandas as pd
-from scipy import stats 
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import confusion_matrix, classification_report, fbeta_score,\
-    PrecisionRecallDisplay, make_scorer, precision_recall_curve, average_precision_score
+from sklearn.metrics import fbeta_score, make_scorer,\
+    PrecisionRecallDisplay
 from sklearn.model_selection import KFold, GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -56,17 +53,6 @@ df_train.info()
 # Categorical variables to include in the model
 logistic_categ_var = ['Location', 'WindGustDir', 'WindDir9am', 'WindDir3pm', 'RainToday']
 
-# Create encoder
-logistic_var_encoder = OneHotEncoder(categories='auto', sparse = False)
-logistic_var_encoder.fit(df_test[logistic_categ_var])
-
-encoded_columns = logistic_var_encoder.get_feature_names_out(logistic_categ_var)
-
-# %%
-# Get encoded categorical data
-encoded_data = logistic_var_encoder.transform(df_train[logistic_categ_var])
-encoded_data = pd.DataFrame(encoded_data, columns = encoded_columns, index = df_train.index)
-
 # %%
 # Numerical variables to include in the model
 logistic_numeric_var = [
@@ -90,24 +76,25 @@ sns.heatmap(df_train[logistic_numeric_var].corr().abs(), annot=True, fmt = '.2f'
 
 #%%
 
-# Create X and y for the logistic model
-logistic_X = pd.concat([df_train[logistic_numeric_var], encoded_data], axis=1)
-logistic_y = df_train['RainTomorrow01']
+# encode data
+logistic_X, logistic_X_test = utils.get_encoded_data(
+    df_train = df_train,
+    df_test = df_test,
+    categ_var = logistic_categ_var,
+    numeric_var = logistic_numeric_var)
 
+#%%
+# get output
+logistic_y = df_train['RainTomorrow01'].copy()
+logistic_y_test = df_test['RainTomorrow01'].copy()
+
+# %%
+# Check train data
 print(logistic_X.shape)
 print(logistic_y.shape)
 
 # %%
-# Encode data test
-
-# Get encoded categorical data test
-encoded_data_test = logistic_var_encoder.transform(df_test[logistic_categ_var])
-encoded_data_test = pd.DataFrame(encoded_data_test, columns = encoded_columns, index = df_test.index)
-
-# Create X_test and y_test for the logistic model
-logistic_X_test = pd.concat([df_test[logistic_numeric_var], encoded_data_test], axis=1)
-logistic_y_test = df_test['RainTomorrow01']
-
+# Check test data
 print(logistic_X_test.shape)
 print(logistic_y_test.shape)
 
@@ -208,9 +195,10 @@ df_train.info()
 
 # %%
 # We use the same categorical variables as before
-# ['Location', 'WindGustDir', 'WindDir9am', 'WindDir3pm', 'RainToday']
-
-encoded_data.shape
+logistic_categ_var_adv = [
+    'Location', 'WindGustDir', 
+    'WindDir9am', 'WindDir3pm', 'RainToday'
+    ]
 
 # %%
 # Different Numerical variables to include in the model
@@ -235,22 +223,20 @@ sns.heatmap(df_train[logistic_numeric_var_adv].corr().abs(), annot=True, fmt = '
     .set_title('Absolute Corretlation Value')
 
 #%%
+# encode data
+logistic_X_adv, logistic_X_test_adv = utils.get_encoded_data(
+    df_train = df_train,
+    df_test = df_test,
+    categ_var = logistic_categ_var_adv,
+    numeric_var = logistic_numeric_var_adv)
 
-# Create X for the logistic model advanced
-logistic_X_adv = pd.concat([df_train[logistic_numeric_var_adv], encoded_data], axis=1)
-
+# %%
+# Check train data
 print(logistic_X_adv.shape)
 print(logistic_y.shape)
 
 # %%
-# Encode data test
-
-# Same encoded categorical data test
-encoded_data_test.shape
-
-# Create X_test and y_test for the logistic model
-logistic_X_test_adv = pd.concat([df_test[logistic_numeric_var_adv], encoded_data_test], axis=1)
-
+# Check test data
 print(logistic_X_test_adv.shape)
 print(logistic_y_test.shape)
 

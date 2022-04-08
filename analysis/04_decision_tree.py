@@ -23,12 +23,9 @@ sys.path.append('../mycode')
 
 import numpy as np
 import pandas as pd
-from scipy import stats 
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
 from sklearn import tree
-from sklearn.metrics import confusion_matrix, classification_report, fbeta_score,\
-    PrecisionRecallDisplay, make_scorer, precision_recall_curve
+from sklearn.metrics import fbeta_score, make_scorer,\
+     PrecisionRecallDisplay
 from sklearn.model_selection import KFold, GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -55,17 +52,6 @@ df_train.info()
 # Categorical variables to include in the model
 tree_categ_var = ['Location', 'WindGustDir', 'WindDir9am', 'WindDir3pm', 'RainToday']
 
-# Create encoder
-tree_var_encoder = OneHotEncoder(categories='auto', sparse = False)
-tree_var_encoder.fit(df_test[tree_categ_var])
-
-encoded_columns = tree_var_encoder.get_feature_names_out(tree_categ_var)
-
-# %%
-# Get encoded categorical data
-encoded_data = tree_var_encoder.transform(df_train[tree_categ_var])
-encoded_data = pd.DataFrame(encoded_data, columns = encoded_columns, index = df_train.index)
-
 # %%
 # Numerical variables to include in the model 
 # [not scaled to facilitate interpretation]
@@ -90,30 +76,29 @@ sns.heatmap(df_train[tree_numeric_var].corr().abs(), annot=True, fmt = '.2f', li
     .set_title('Absolute Corretlation Value')
 
 #%%
+# encode data
+tree_X, tree_X_test = utils.get_encoded_data(
+    df_train = df_train,
+    df_test = df_test,
+    categ_var = tree_categ_var,
+    numeric_var = tree_numeric_var)
 
-# Create X and y for the decision tree
-tree_X = pd.concat([df_train[tree_numeric_var], encoded_data], axis=1)
-tree_y = df_train['RainTomorrow01']
+#%%
+# get output
+tree_y = df_train['RainTomorrow01'].copy()
+tree_y_test = df_test['RainTomorrow01'].copy()
 
+# %%
+# Check train data
 print(tree_X.shape)
 print(tree_y.shape)
 
 # %%
-# Encode data test
-
-# Get encoded categorical data test
-encoded_data_test = tree_var_encoder.transform(df_test[tree_categ_var])
-encoded_data_test = pd.DataFrame(encoded_data_test, columns = encoded_columns, index = df_test.index)
-
-# Create X_test and y_test for the tree model
-tree_X_test = pd.concat([df_test[tree_numeric_var], encoded_data_test], axis=1)
-tree_y_test = df_test['RainTomorrow01']
-
+# Check test data
 print(tree_X_test.shape)
 print(tree_y_test.shape)
 
 # %%
-
 #----    02 Fit Model    ----#
 
 # First trial decision tree
@@ -228,18 +213,6 @@ df_train.info()
 # Categorical variables to include in the model
 tree_categ_var_adv = ['Location', 'RainToday']
 
-# Create encoder
-tree_var_encoder_adv = OneHotEncoder(categories='auto', sparse = False)
-tree_var_encoder_adv.fit(df_test[tree_categ_var_adv])
-
-encoded_columns_adv = tree_var_encoder_adv.get_feature_names_out(tree_categ_var_adv)
-
-# %%
-# Get encoded categorical data
-encoded_data_adv = tree_var_encoder_adv.transform(df_train[tree_categ_var_adv])
-encoded_data_adv = pd.DataFrame(encoded_data_adv, columns = encoded_columns_adv, index = df_train.index)
-encoded_data_adv.shape
-
 # %%
 # Different Numerical variables to include in the model
 # Include variables coded as Diff to riduce collinearity
@@ -267,23 +240,20 @@ sns.heatmap(df_train[tree_numeric_var_adv].corr().abs(), annot=True, fmt = '.2f'
     .set_title('Absolute Corretlation Value')
 
 #%%
+# encode data
+tree_X_adv, tree_X_test_adv = utils.get_encoded_data(
+    df_train = df_train,
+    df_test = df_test,
+    categ_var = tree_categ_var_adv,
+    numeric_var = tree_numeric_var_adv)
 
-# Create X for the tree model advanced
-tree_X_adv = pd.concat([df_train[tree_numeric_var_adv], encoded_data_adv], axis=1)
-
+# %%
+# Check train data
 print(tree_X_adv.shape)
 print(tree_y.shape)
 
 # %%
-# Encode data test
-
-# Get encoded categorical data test
-encoded_data_test_adv = tree_var_encoder_adv.transform(df_test[tree_categ_var_adv])
-encoded_data_test_adv = pd.DataFrame(encoded_data_test_adv, columns = encoded_columns_adv, index = df_test.index)
-
-# Create X_test and y_test for the tree model
-tree_X_test_adv = pd.concat([df_test[tree_numeric_var_adv], encoded_data_test_adv], axis=1)
-
+# Check test data
 print(tree_X_test_adv.shape)
 print(tree_y_test.shape)
 
