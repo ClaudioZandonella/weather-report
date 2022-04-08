@@ -11,6 +11,7 @@ datetime = "*"
 matplotlib = "*"
 scipy = "*"
 sklearn = "*"
+xgboost = "*"
 
 [dev-packages]
 ipykernel = "*"
