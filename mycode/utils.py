@@ -135,10 +135,10 @@ def get_coef_importance(classifier, col_names):
 
     old_shape = classifier.coef_.shape
     coeff_val = classifier.coef_.reshape(old_shape[1])
-    coeff = dict(zip(col_names, coeff_val))
-
-    coeff = {k: v for k, v in \
-        sorted(coeff.items(), key=lambda item: abs(item[1]), reverse=True)}
+    coeff = pd.DataFrame({
+        'coefficient' : col_names,
+        'value' : coeff_val
+    }).sort_values('value', key = lambda col: abs(col), ascending=False)
     
     return coeff
 

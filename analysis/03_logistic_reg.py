@@ -370,17 +370,27 @@ myPlots.plot_precision_recall(
 
 # %% 
 # Check Models Coefficient 
-utils.get_coef_importance(
+best_coef = utils.get_coef_importance(
     classifier = best_fit_logistic,
     col_names = logistic_X_test.columns
     )
 
+# Plot Coefficients
+sns.barplot(data = best_coef.head(10), x = 'value', y = 'coefficient')
+
+best_coef
+
 # %% 
 # Check Models Coefficient 
-utils.get_coef_importance(
+best_coef_adv = utils.get_coef_importance(
     classifier = best_fit_logistic_adv,
     col_names = logistic_X_test_adv.columns
     )
+
+# Plot Coefficients
+sns.barplot(data = best_coef_adv.head(10), x = 'value', y = 'coefficient')
+
+best_coef_adv
 
 # %%
 

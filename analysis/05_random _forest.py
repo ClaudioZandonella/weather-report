@@ -217,10 +217,12 @@ display = PrecisionRecallDisplay.from_estimator(
 )
 
 #%%
+# Check feature
 features_adv = utils.get_feature_importance(fit_forest_adv, forest_X_adv.columns)
 features_adv
 
 # %%
+# Plot features
 sns.barplot(data = features_adv.head(10), x = 'importance', y = 'feature')
 
 #%%
@@ -297,10 +299,12 @@ display = PrecisionRecallDisplay.from_estimator(
 )
 
 #%%
+# Check Features
 best_features_adv = utils.get_feature_importance(best_fit_forest_adv, forest_X_adv.columns)
 best_features_adv
 
 # %%
+# Plot Features
 sns.barplot(data = best_features_adv.head(10), x = 'importance', y = 'feature')
 
 #%%

@@ -204,12 +204,18 @@ display = PrecisionRecallDisplay.from_estimator(
 )
 
 # %%
-# Plot tree and feature importance
+# Plot tree 
 plt.figure(figsize=(40, 20))
 annotations = tree.plot_tree(best_fit_tree, feature_names = tree_X.columns, filled = True, max_depth = 3)
 
-utils.get_feature_importance(best_fit_tree, tree_X.columns)
+#%%
+# Check Features
+best_features = utils.get_feature_importance(best_fit_tree, tree_X.columns)
 
+# Plot Features
+sns.barplot(data = best_features.head(10), x = 'importance', y = 'feature')
+
+best_features
 # %%
 
 #----    05 Encode Data Advanced Feature   ----#
@@ -374,11 +380,18 @@ display = PrecisionRecallDisplay.from_estimator(
 )
 
 # %%
-# Plot tree and feature importance
+# Plot tree
 plt.figure(figsize=(40, 20))
 annotations = tree.plot_tree(best_fit_tree_adv, feature_names = tree_X_adv.columns, filled = True, max_depth = 3)
 
-utils.get_feature_importance(best_fit_tree_adv, tree_X_adv.columns)
+#%%
+# Check Features
+best_features_adv = utils.get_feature_importance(best_fit_tree_adv, tree_X_adv.columns)
+
+# Plot Features
+sns.barplot(data = best_features_adv.head(10), x = 'importance', y = 'feature')
+
+best_features_adv
 
 #%%
 #----    09 Models Comparison    ----#
