@@ -30,9 +30,10 @@ from sklearn.model_selection import KFold, GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import utils  # from mycode
-import myStats # from mycode
-import myPlots  # from mycode
+# from mycode/
+import utils  
+import myStats
+import myPlots
 
 # get data
 
@@ -72,7 +73,7 @@ tree_numeric_var = [
 plt.figure(figsize=(20,20))
 
 # sns.heatmap(df.corr(), linewidths=.5)
-sns.heatmap(df_train[tree_numeric_var].corr().abs(), annot=True, fmt = '.2f', linewidths=.5)\
+sns.heatmap(df_train[tree_numeric_var].corr().abs(), annot = True, fmt = '.2f', linewidths = .5)\
     .set_title('Absolute Corretlation Value')
 
 #%%
@@ -120,7 +121,7 @@ display = PrecisionRecallDisplay.from_estimator(
 
 # %%
 # Plot tree
-plt.figure(figsize=(40, 20))
+plt.figure(figsize = (40, 20))
 annotations = tree.plot_tree(fit_tree, feature_names = tree_X.columns, filled = True, max_depth = 3)
 #%%
 #----    03 Grid Search    ----#
@@ -131,34 +132,29 @@ ftwo_scorer = make_scorer(fbeta_score, pos_label = 1,  beta=2)
 #%%
 # Define grid search
 param_grid = {
-    'criterion' : ['gini'], 
-    'splitter' : ['best'], 
     'max_depth' : [5, 10, 15, 20, 25],
-    'class_weight' : ['balanced'], 
-    'random_state' : [2022]
+    'class_weight' : ['balanced']
 }
 
 param_grid_II = {
-    'criterion' : ['gini'], 
-    'splitter' : ['best'], 
     'max_depth' : [5, 8, 10, 12, 15],
-    'class_weight' : ['balanced', {0:1, 1:5},  {0:1, 1:7}], 
-    'random_state' : [2022]
+    'class_weight' : ['balanced', {0:1, 1:5},  {0:1, 1:7}]
 }
 
 param_grid_III = {
-    'criterion' : ['gini'], 
-    'splitter' : ['best'], 
     'max_depth' : [7, 8, 9, 10, 11],
-    'class_weight' : [{0:1, 1:5}, {0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}], 
-    'random_state' : [2022]
+    'class_weight' : [{0:1, 1:5}, {0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}]
 }
 
 grid_tree = GridSearchCV(
-    tree.DecisionTreeClassifier(), 
-    param_grid=param_grid_III,
-    scoring=ftwo_scorer, 
-    cv = KFold(5, shuffle=True, random_state=2022)
+    tree.DecisionTreeClassifier(
+        criterion = 'gini', 
+        splitter = 'best',
+        random_state = 2022
+    ), 
+    param_grid = param_grid_III,
+    scoring = ftwo_scorer, 
+    cv = KFold(5, shuffle = True, random_state = 2022)
 )
 
 #%%
@@ -168,7 +164,7 @@ grid_tree.fit(tree_X, tree_y)
 
 #%%
 # Check Results
-grid_tree_result = pd.DataFrame(grid_tree.cv_results_).sort_values(by=['rank_test_score'])
+grid_tree_result = pd.DataFrame(grid_tree.cv_results_).sort_values(by = ['rank_test_score'])
 myPlots.plot_grid_tree(grid_tree_result)
 grid_tree_result
 
@@ -186,12 +182,12 @@ myStats.get_score_report(best_fit_tree, tree_y, tree_X)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    best_fit_tree, tree_X, tree_y, name="Best Model"
+    best_fit_tree, tree_X, tree_y, name = "Best Model"
 )
 
 # %%
 # Plot tree 
-plt.figure(figsize=(40, 20))
+plt.figure(figsize = (40, 20))
 annotations = tree.plot_tree(best_fit_tree, feature_names = tree_X.columns, filled = True, max_depth = 3)
 
 #%%
@@ -215,7 +211,7 @@ tree_categ_var_adv = ['Location', 'RainToday']
 
 # %%
 # Different Numerical variables to include in the model
-# Include variables coded as Diff to riduce collinearity
+# Include variables coded as Diff to reduce collinearity
 # Include wind directions as Cos and Sin
 tree_numeric_var_adv = [
     'MaxMinDiff', 'MaxTemp', 
@@ -236,7 +232,7 @@ tree_numeric_var_adv = [
 plt.figure(figsize=(20,20))
 
 # sns.heatmap(df.corr(), linewidths=.5)
-sns.heatmap(df_train[tree_numeric_var_adv].corr().abs(), annot=True, fmt = '.2f', linewidths=.5)\
+sns.heatmap(df_train[tree_numeric_var_adv].corr().abs(), annot = True, fmt = '.2f', linewidths = .5)\
     .set_title('Absolute Corretlation Value')
 
 #%%
@@ -275,7 +271,7 @@ myStats.get_score_report(fit_tree_adv, tree_y, tree_X_adv)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    fit_tree_adv, tree_X_adv, tree_y, name="Initial Model"
+    fit_tree_adv, tree_X_adv, tree_y, name = "Initial Model"
 )
 
 # %%
@@ -292,34 +288,29 @@ ftwo_scorer
 #%%
 # Define grid search
 param_grid = {
-    'criterion' : ['gini'], 
-    'splitter' : ['best'], 
     'max_depth' : [5, 10, 15, 20, 25],
-    'class_weight' : ['balanced'], 
-    'random_state' : [2022]
+    'class_weight' : ['balanced']
 }
 
 param_grid_II = {
-    'criterion' : ['gini'], 
-    'splitter' : ['best'], 
     'max_depth' : [5, 8, 10, 12, 15],
-    'class_weight' : ['balanced', {0:1, 1:5},  {0:1, 1:7}], 
-    'random_state' : [2022]
+    'class_weight' : ['balanced', {0:1, 1:5},  {0:1, 1:7}]
 }
 
 param_grid_III = {
-    'criterion' : ['gini'], 
-    'splitter' : ['best'], 
     'max_depth' : [7, 8, 9, 10, 11],
-    'class_weight' : [{0:1, 1:5}, {0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}], 
-    'random_state' : [2022]
+    'class_weight' : [{0:1, 1:5}, {0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}]
 }
 
 grid_tree_adv = GridSearchCV(
-    tree.DecisionTreeClassifier(), 
-    param_grid=param_grid_III,
-    scoring=ftwo_scorer, 
-    cv = KFold(5, shuffle=True, random_state=2022)
+    tree.DecisionTreeClassifier(
+        criterion = 'gini', 
+        splitter = 'best',
+        random_state = 2022
+    ), 
+    param_grid = param_grid_III,
+    scoring = ftwo_scorer, 
+    cv = KFold(5, shuffle = True, random_state = 2022)
 )
 
 #%%
@@ -329,7 +320,7 @@ grid_tree_adv.fit(tree_X_adv, tree_y)
 
 #%%
 # Check Results
-grid_tree_result_adv = pd.DataFrame(grid_tree_adv.cv_results_).sort_values(by=['rank_test_score'])
+grid_tree_result_adv = pd.DataFrame(grid_tree_adv.cv_results_).sort_values(by = ['rank_test_score'])
 myPlots.plot_grid_tree(grid_tree_result_adv)
 grid_tree_result_adv
 
@@ -352,7 +343,7 @@ display = PrecisionRecallDisplay.from_estimator(
 
 # %%
 # Plot tree
-plt.figure(figsize=(40, 20))
+plt.figure(figsize = (40, 20))
 annotations = tree.plot_tree(best_fit_tree_adv, feature_names = tree_X_adv.columns, filled = True, max_depth = 3)
 
 #%%
@@ -374,14 +365,14 @@ myStats.get_score_report(best_fit_tree, tree_y_test, tree_X_test)
 # 'Advanced' model on test data
 myStats.get_score_report(best_fit_tree_adv, tree_y_test, tree_X_test_adv)
 
-# The model 'advanced' is slightly slightly bettter
+# The model 'advanced' is slightly slightly better
 
 # %%
 # Precision-Recall Plot
 
 myPlots.plot_precision_recall(
     list_classifier = [best_fit_tree, best_fit_tree_adv],
-    list_X =[tree_X_test, tree_X_test_adv],
+    list_X = [tree_X_test, tree_X_test_adv],
     true_y = tree_y_test,
     list_names = ['Simple Model', 'Adv Model'], 
     pos_label = 1

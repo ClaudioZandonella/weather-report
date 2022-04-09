@@ -25,8 +25,9 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import utils  # from mycode
-import myPlots # from mycode
+# from mycode/
+import utils
+import myPlots 
 
 # get data
 
@@ -45,13 +46,14 @@ df['Set'] = pd.cut(df['Year'], bins=[2006, 2015, 2017],
 utils.my_count(df['Set'])
 
 # %%
-# Get trainin and test data
+# Get train and test data
 df_train = df[df['Set'] == 'Training'].copy()
 df_test = df[df['Set'] == 'Test'].copy()
 
 # %% 
 
-# Check  again diff in dates as we removed dates after 2015-12-31
+# Update diff in dates as we removed dates after 2015-12-31 
+# Failing if looking for values after 2015-12-31
 df_train['DiffPrev'] = utils.get_days_diff(df_train, periods = 1)
 df_train['DiffNext'] = utils.get_days_diff(df_train, periods = -1)
 
@@ -63,6 +65,19 @@ col_to_plot = df_train.select_dtypes(include=np.number)\
 myPlots.plot_descriptive(df_train, 
                          columns = col_to_plot, 
                          outcome="RainTomorrow") 
+
+# %%
+
+# Check relation Today and Tomorrow
+contingency_rain = df_train.groupby(['RainToday', 'RainTomorrow']).size().reset_index(name='counts')
+
+tot_group_rain = contingency_rain.groupby(['RainToday'])['counts'].sum()
+
+contingency_rain = contingency_rain.merge(tot_group_rain, on = "RainToday")
+contingency_rain['counts'] = contingency_rain['counts_x']
+contingency_rain['propToday'] = contingency_rain['counts_x'] /contingency_rain['counts_y']
+contingency_rain.drop(['counts_x', 'counts_y'],  axis=1, inplace=True)
+contingency_rain
 #%%
 
 #----    02 Missing Values    ----#
@@ -88,7 +103,7 @@ cols_to_mean = [colname for colname in numeric_columns if \
 
 # Get trimmed mean values
 trimmed_means_val = df_train.groupby('Location')[cols_to_mean].aggregate(
-    lambda x: stats.trim_mean(x[x.notna()],  proportiontocut=.05))
+    lambda x: stats.trim_mean(x[x.notna()], proportiontocut=.05))
 
 # Get median values
 median_val = df_train.groupby('Location')[cols_to_median].aggregate(np.nanmedian)
@@ -106,7 +121,7 @@ for col_name in cols_smart_fillna:
     utils.smart_fillna(df_train, col_name)
 
 # %%
-# Substitute remeaning NAN with trimmed mean value
+# Substitute remaining NAN with trimmed mean value
 for col_name in reference_values.columns:
     var_dict = dict(reference_values[col_name]) # trimmed means or median according to location
     df_train[col_name].fillna(df_train['Location'].map(var_dict), inplace = True)
@@ -203,7 +218,7 @@ for col_name in var_wind:
 df_test[object_columns] = df_test[object_columns].fillna('Missing')
 
 # %%
-# Missing continous variabels
+# Missing continuos variabels
 for col_name in reference_values.columns:
     var_dict = dict(reference_values[col_name]) # trimmed means or median according to location
     df_test[col_name].fillna(df_test['Location'].map(var_dict), inplace = True)

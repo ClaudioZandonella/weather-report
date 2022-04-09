@@ -5,7 +5,7 @@
 # Index Content
 # 01 Import data
 # 02 Descriptive Stat Categorical
-# 03 Descriptive Stat Continous
+# 03 Descriptive Stat Continuos
 # 04 Descriptive Dates
 # 05 End Descriptive
 
@@ -22,8 +22,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import utils  # from mycode
-# import myPlots  # from mycode
+# from mycode/
+import utils
 
 
 # %%
@@ -37,14 +37,14 @@ df.sort_values(['Location', 'Date'], inplace = True)
 df.reset_index(drop = True, inplace = True)
 
 # %%
+# Data type info
 df.info()
 
 # %%
 
 #----    02 Descriptive Stat Categorical    ----#
 
-# Check categorial variables levels
-
+# Check categorial variables number of levels
 df.describe(include=object)
 
 # %%
@@ -78,17 +78,6 @@ utils.my_count(df['RainToday'])
 utils.my_count(df['RainTomorrow'])
 
 # %%
-# Check realtion Today and Tomorrow
-contingency_rain = df.groupby(['RainToday', 'RainTomorrow']).size().reset_index(name='counts')
-
-tot_group_rain = contingency_rain.groupby(['RainToday'])['counts'].sum()
-
-contingency_rain = contingency_rain.merge(tot_group_rain, on = "RainToday")
-contingency_rain['counts'] = contingency_rain['counts_x']
-contingency_rain['propToday'] = contingency_rain['counts_x'] /contingency_rain['counts_y']
-contingency_rain.drop(['counts_x', 'counts_y'],  axis=1, inplace=True)
-contingency_rain
-# %%
 
 # # Check if missing values for RainToday may be coded in RainTomorrow of yesterday
 # df_null_rain = df[df['RainToday'].isnull()]
@@ -108,9 +97,9 @@ contingency_rain
 
 # %%
 
-#----    03 Descriptive Stat Continous    ----#
+#----    03 Descriptive Stat Continuos    ----#
 
-# Summary continous variables
+# Summary continuos variables
 df.describe()
 
 # %%
@@ -160,9 +149,9 @@ fig, axes = plt.subplots(3,2, figsize= (14,14))
 
 for i, col_name in enumerate(dic_filter):
     var_name = col_name + 'Log'
-    df[var_name].hist(ax=axes[i%3][i//3], alpha=0.7, bins = 30);
+    df[var_name].hist(ax = axes[i%3][i//3], alpha = 0.7, bins = 30);
     axes[i%3][i//3].set_title(f'{var_name}', fontsize=13);
-    plt.subplots_adjust(hspace=0.45)
+    plt.subplots_adjust(hspace = 0.45)
 
 #%%
 # Rainfall check values different from 0
@@ -182,7 +171,7 @@ df_corr = df.corr().round(2)
 df_corr[abs(df_corr) > .6]
 
 #%%
-# Check if both values are avialable for matching variables
+# Check if both values are available for matching variables
 
 # Temperature
 print(df[['MinTemp', 'MaxTemp']].isnull().sum(axis=1).value_counts())
@@ -224,9 +213,9 @@ df['RainTomorrow01'] = df['RainTomorrow'].map({'No' : 0, 'Yes' : 1})
 
 # %%
 # Relation between variabels
-plt.figure(figsize=(20,20))
+plt.figure(figsize = (20,20))
 # sns.heatmap(df.corr(), linewidths=.5)
-sns.heatmap(df.corr().abs(), linewidths=.5, annot=True, fmt = '.2f')\
+sns.heatmap(df.corr().abs(), linewidths = .5, annot = True, fmt = '.2f')\
     .set_title('Absolute Corretlation Value')
 
 # Check high vlaues of correlation
@@ -248,7 +237,7 @@ df['Week'] = df['Date'].dt.isocalendar().week
 # Check availabe years
 print(utils.my_count(df['Year']))
 
-# Check dates are continous
+# Check dates are continuos
 grouped_location = df.groupby(['Location'])
 grouped_location['Year'].value_counts().unstack()
 

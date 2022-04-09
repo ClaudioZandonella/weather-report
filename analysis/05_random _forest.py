@@ -23,20 +23,15 @@ sys.path.append('../mycode')
 
 import numpy as np
 import pandas as pd
-from collections import OrderedDict
-from scipy import stats 
-from sklearn.preprocessing import StandardScaler
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import confusion_matrix, classification_report, fbeta_score,\
-    PrecisionRecallDisplay, make_scorer, precision_recall_curve
-from sklearn.model_selection import KFold, GridSearchCV
+from sklearn.metrics import  PrecisionRecallDisplay
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import utils  # from mycode
-import myStats # from mycode
-import myPlots  # from mycode
+# from mycode
+import utils  
+import myStats
+import myPlots
 
 # get data
 
@@ -103,24 +98,24 @@ sns.barplot(data = features.head(10), x = 'importance', y = 'feature')
 #----    03 Grid Search    ----#
 
 ensemble_forests = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:3.5}],
-    max_features= [10, 20],
+    class_weights = [{0:1, 1:3.5}],
+    max_features = [10, 20],
     max_depth = [5, 10, 15],
-    random_state=2022
+    random_state = 2022
     )
 
 ensemble_forests_II = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:3.5}],
-    max_features= [10, 20],
+    class_weights = [{0:1, 1:3.5}],
+    max_features = [10, 20],
     max_depth = [8, 10, 12],
-    random_state=2022
+    random_state = 2022
     )
 
 ensemble_forests_III = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:3.5}, {0:1, 1:5}, {0:1, 1:7}],
-    max_features= [20, 40],
+    class_weights = [{0:1, 1:3.5}, {0:1, 1:5}, {0:1, 1:7}],
+    max_features = [20, 40],
     max_depth = [10],
-    random_state=2022
+    random_state = 2022
     )
 
 ensemble_forests_IV = myStats.get_grid_forests(
@@ -137,12 +132,19 @@ ensemble_forests_V = myStats.get_grid_forests(
     random_state=2022
     )
 
+ensemble_forests_VI = myStats.get_grid_forests( # to allow fast compilation
+    class_weights=[{0:1, 1:7}],
+    max_features= [40],
+    max_depth = [11],
+    random_state=2022
+    )
+
 #%%
 
 %%time
 # No  big improvements after 350
 my_range = range(360, 400 + 1, 20)
-oobf2_rates= myStats.get_oobf2_rates(ensemble_forests_V, my_range, forest_X, forest_y)
+oobf2_rates = myStats.get_oobf2_rates(ensemble_forests_VI, my_range, forest_X, forest_y)
 
 # %%
 
@@ -228,49 +230,55 @@ sns.barplot(data = features_adv.head(10), x = 'importance', y = 'feature')
 
 #%%
 
-#----    07 Grid Search Advancedd    ----#
+#----    07 Grid Search Advanced    ----#
 
 ensemble_forests = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:7}],
-    max_features= [10, 20],
+    class_weights = [{0:1, 1:7}],
+    max_features = [10, 20],
     max_depth = [5, 10, 15],
-    random_state=2022
+    random_state = 2022
     )
 
 ensemble_forests_II = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:7}],
-    max_features= [10],
+    class_weights = [{0:1, 1:7}],
+    max_features = [10],
     max_depth = [14, 15, 16],
-    random_state=2022
+    random_state = 2022
     )
 
 ensemble_forests_III = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}],
-    max_features= [10],
+    class_weights = [{0:1, 1:6}, {0:1, 1:7}, {0:1, 1:8}],
+    max_features = [10],
     max_depth = [15],
-    random_state=2022
+    random_state = 2022
     )
 
 ensemble_forests_IV = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:7}],
-    max_features= [20, 30, 40],
+    class_weights = [{0:1, 1:7}],
+    max_features = [20, 30, 40],
     max_depth = [10],
-    random_state=2022
+    random_state = 2022
     )
 
 ensemble_forests_V = myStats.get_grid_forests(
-    class_weights=[{0:1, 1:7}],
-    max_features= [40],
+    class_weights = [{0:1, 1:7}],
+    max_features = [40],
     max_depth = [10, 12, 14],
-    random_state=2022
+    random_state = 2022
     )
 
+ensemble_forests_VI = myStats.get_grid_forests( # to allow fast compilation
+    class_weights = [{0:1, 1:7}],
+    max_features = [40],
+    max_depth = [12],
+    random_state = 2022
+    )
 #%%
 
 %%time
 # No  big improvements after 350
 my_range = range(360, 400 + 1, 20)
-oobf2_rates= myStats.get_oobf2_rates(ensemble_forests_V, my_range, forest_X, forest_y)
+oobf2_rates = myStats.get_oobf2_rates(ensemble_forests_VI, my_range, forest_X, forest_y)
 
 # %%
 
@@ -296,7 +304,7 @@ myStats.get_score_report(best_fit_forest_adv, forest_y, forest_X_adv)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    best_fit_forest_adv, forest_X_adv, forest_y, name="Best Model"
+    best_fit_forest_adv, forest_X_adv, forest_y, name = "Best Model"
 )
 
 #%%
@@ -318,14 +326,14 @@ myStats.get_score_report(best_fit_forest, forest_y_test, forest_X_test)
 # 'Advanced' model on test data
 myStats.get_score_report(best_fit_forest_adv, forest_y_test, forest_X_test_adv)
 
-# The model 'advanced' is slightly slightly bettter
+# The model 'advanced' is slightly slightly better
 
 # %%
 # Precision-Recall Plot
 
 myPlots.plot_precision_recall(
     list_classifier = [best_fit_forest, best_fit_forest_adv],
-    list_X =[forest_X_test, forest_X_test_adv],
+    list_X = [forest_X_test, forest_X_test_adv],
     true_y = forest_y_test,
     list_names = ['Simple Model', 'Adv Model'], 
     pos_label = 1

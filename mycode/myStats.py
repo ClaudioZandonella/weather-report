@@ -14,7 +14,7 @@ from sklearn.metrics import confusion_matrix, classification_report, fbeta_score
 
 def get_fbeta_score(true_y, pred_y):
     '''
-    get values of f2 for clas 0, class 1, and average (macro and weighted)
+    get values of f2 for class 0, class 1, and average (macro and weighted)
     '''
 
     values = {
@@ -47,23 +47,23 @@ def get_score_report(classifier, true_y, true_X):
 
 def get_coef_importance(classifier, col_names):
     '''
-    Given the clasisfier return dict of coef ordered for importance (absolute value)
+    Given the classifier return dict of coef ordered for importance (absolute value)
     '''
 
     old_shape = classifier.coef_.shape
-    coeff_val = classifier.coef_.reshape(old_shape[1])
-    coeff = pd.DataFrame({
+    coef_val = classifier.coef_.reshape(old_shape[1])
+    coef = pd.DataFrame({
         'coefficient' : col_names,
-        'value' : coeff_val
+        'value' : coef_val
     }).sort_values('value', key = lambda col: abs(col), ascending=False)
     
-    return coeff
+    return coef
 
 #----    get_feature_importance    ----#
 
 def get_feature_importance(classifier, col_names):
     '''
-    Given the clasisfier return dict of feaatures ordered for importance (absolute value)
+    Given the classifier return dict of features ordered for importance (absolute value)
     '''
 
     feat = pd.DataFrame({
@@ -77,7 +77,7 @@ def get_feature_importance(classifier, col_names):
 
 def get_oobf2_rates(ensemble_forests, my_range, X, y):
     '''
-    compute oob f2 value for a range of trees for each clissifier
+    compute oob f2 value for a range of trees for each classifier
     '''
 
     f2_rate = OrderedDict((label, []) for label, _ in ensemble_forests)

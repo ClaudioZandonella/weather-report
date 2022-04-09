@@ -21,9 +21,10 @@ import pandas as pd
 # import matplotlib.pyplot as plt
 # import seaborn as sns
 
-import utils  # from mycode
-import myStats # from mycode 
-import myPlots  # from mycode
+# from mycode
+import utils 
+import myStats 
+import myPlots 
 
 # %%
 #----    01 Load Models    ----#
@@ -111,7 +112,7 @@ myStats.get_score_report(fit_xgb, y_test, xgb_X_test)
 # Precision-Recall Plot
 myPlots.plot_precision_recall(
     list_classifier = [fit_logistic, fit_tree, fit_forest, fit_xgb],
-    list_X =[logistic_X_test, tree_X_test, tree_X_test, xgb_X_test],
+    list_X = [logistic_X_test, tree_X_test, tree_X_test, xgb_X_test],
     true_y = y_test,
     list_names = ['Logistic', 'Tree', 'Forest', 'XGB'], 
     pos_label = 1
@@ -141,7 +142,7 @@ myStats.get_score_report(fit_xgb_adv, y_test, xgb_X_test_adv)
 # Precision-Recall Plot
 myPlots.plot_precision_recall(
     list_classifier = [fit_logistic_adv, fit_tree_adv, fit_forest_adv, fit_xgb_adv],
-    list_X =[logistic_X_test_adv, tree_X_test_adv, tree_X_test_adv, xgb_X_test_adv],
+    list_X = [logistic_X_test_adv, tree_X_test_adv, tree_X_test_adv, xgb_X_test_adv],
     true_y = y_test,
     list_names = ['Logistic', 'Tree', 'Forest', 'XGB'], 
     pos_label = 1

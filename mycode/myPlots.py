@@ -14,7 +14,7 @@ from sklearn.metrics import precision_recall_curve, average_precision_score,\
 
 def plot_descriptive(data, columns, outcome = None):
     '''
-    Plot histogram of continous variables
+    Plot histogram of continuos variables
     '''
 
     n_var = len(columns)
@@ -66,7 +66,7 @@ def plot_grid_tree(grid_tree):
         cv_scores_std = grid_tree[grid_tree['param_class_weight'] == i].\
             sort_values(by=['param_max_depth'])['std_test_score']
         
-        ax.plot(depths, cv_scores_mean, '-o', label=f'Class Weigths: {i}', alpha=0.9)
+        ax.plot(depths, cv_scores_mean, '-o', label=f'Class Weights: {i}', alpha=0.9)
         ax.fill_between(depths, cv_scores_mean-2*cv_scores_std, cv_scores_mean+2*cv_scores_std, alpha=0.1)
     ax.set_xlabel('Tree depth')
     ax.set_ylabel('F2 (Positive label: 1)')

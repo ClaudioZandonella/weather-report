@@ -30,9 +30,10 @@ from sklearn.model_selection import KFold, GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import utils  # from mycode
-import myStats # from mycode 
-import myPlots  # from mycode
+# from mycode/
+import utils  
+import myStats
+import myPlots  
 
 # get data
 
@@ -71,7 +72,7 @@ logistic_numeric_var = [
 plt.figure(figsize=(20,20))
 
 # sns.heatmap(df.corr(), linewidths=.5)
-sns.heatmap(df_train[logistic_numeric_var].corr().abs(), annot=True, fmt = '.2f', linewidths=.5)\
+sns.heatmap(df_train[logistic_numeric_var].corr().abs(), annot = True, fmt = '.2f', linewidths = .5)\
     .set_title('Absolute Corretlation Value')
 
 #%%
@@ -127,37 +128,30 @@ ftwo_scorer = make_scorer(fbeta_score, pos_label = 1,  beta=2)
 #%%
 # Define grid search
 param_grid = {
-    'C': [.1, 1, 10], 
-    'max_iter': [200],
-    'penalty': ['l2'],
-    'solver': ['lbfgs'],
-    'class_weight':[{0:1, 1:2}, 'balanced', {0:1, 1:5}],
-    'random_state':[2020]
+    'C': [.1, 1, 10],
+    'class_weight':[{0:1, 1:2}, 'balanced', {0:1, 1:5}]
 }
 
 param_grid_II = {
     'C': [.1, 1, 10], 
-    'max_iter': [200],
-    'penalty': ['l2'],
-    'solver': ['lbfgs'],
-    'class_weight':[{0:1, 1:5}, {0:1, 1:7}, {0:1, 1:9}],
-    'random_state':[2020]
+    'class_weight':[{0:1, 1:5}, {0:1, 1:7}, {0:1, 1:9}]
 }
 
 param_grid_III = {
     'C': [.01, .1, 1], 
-    'max_iter': [200],
-    'penalty': ['l2'],
-    'solver': ['lbfgs'],
-    'class_weight':[{0:1, 1:5.5}, {0:1, 1:6}, {0:1, 1:6.5}],
-    'random_state':[2020]
+    'class_weight':[{0:1, 1:5.5}, {0:1, 1:6}, {0:1, 1:6.5}]
 }
 
 grid_logistic = GridSearchCV(
-    LogisticRegression(), 
-    param_grid=param_grid_III,
-    scoring=ftwo_scorer, 
-    cv = KFold(5, shuffle=True, random_state=2022)
+    LogisticRegression(
+        max_iter = 200,
+        penalty = 'l2',
+        solver = 'lbfgs',
+        random_state = 2020
+    ), 
+    param_grid = param_grid_III,
+    scoring = ftwo_scorer, 
+    cv = KFold(5, shuffle = True, random_state = 2022)
 )
 
 #%%
@@ -167,7 +161,7 @@ grid_logistic.fit(logistic_X, logistic_y)
 
 #%%
 # Check Results
-pd.DataFrame(grid_logistic.cv_results_).sort_values(by=['rank_test_score'])
+pd.DataFrame(grid_logistic.cv_results_).sort_values(by = ['rank_test_score'])
 
 
 #%%
@@ -183,7 +177,7 @@ myStats.get_score_report(best_fit_logistic, logistic_y, logistic_X)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    best_fit_logistic, logistic_X, logistic_y, name="Best Model"
+    best_fit_logistic, logistic_X, logistic_y, name = "Best Model"
 )
 
 # %%
@@ -202,7 +196,7 @@ logistic_categ_var_adv = [
 
 # %%
 # Different Numerical variables to include in the model
-# Include variables coded as Diff to riduce collinearity
+# Include variables coded as Diff to reduce collinearity
 logistic_numeric_var_adv = [
     'MaxMinDiffScale', 'MaxTempScale', 
     'RainfallLogScale', 'EvaporationLogScale',
@@ -219,7 +213,7 @@ logistic_numeric_var_adv = [
 plt.figure(figsize=(20,20))
 
 # sns.heatmap(df.corr(), linewidths=.5)
-sns.heatmap(df_train[logistic_numeric_var_adv].corr().abs(), annot=True, fmt = '.2f', linewidths=.5)\
+sns.heatmap(df_train[logistic_numeric_var_adv].corr().abs(), annot = True, fmt = '.2f', linewidths = .5)\
     .set_title('Absolute Corretlation Value')
 
 #%%
@@ -247,7 +241,7 @@ print(logistic_y_test.shape)
 # First trial logistic regression advanced
 
 fit_logistic_adv = LogisticRegression(
-    penalty='none', C = 1, class_weight = 'balanced', random_state = 2022) \
+    penalty = 'none', C = 1, class_weight = 'balanced', random_state = 2022) \
     .fit(logistic_X_adv, logistic_y)
 
 #%%
@@ -259,7 +253,7 @@ myStats.get_score_report(fit_logistic_adv, logistic_y, logistic_X_adv)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    fit_logistic_adv, logistic_X_adv, logistic_y, name="Initial Model"
+    fit_logistic_adv, logistic_X_adv, logistic_y, name = "Initial Model"
 )
 
 #%%
@@ -271,37 +265,30 @@ ftwo_scorer
 #%%
 # Define grid search
 param_grid = {
-    'C': [.1, 1, 10], 
-    'max_iter': [200],
-    'penalty': ['l2'],
-    'solver': ['lbfgs'],
-    'class_weight':[{0:1, 1:2}, 'balanced', {0:1, 1:5}],
-    'random_state':[2020]
+    'C': [.1, 1, 10],
+    'class_weight':[{0:1, 1:2}, 'balanced', {0:1, 1:5}]
 }
 
 param_grid_II = {
     'C': [.1, 1, 10], 
-    'max_iter': [200],
-    'penalty': ['l2'],
-    'solver': ['lbfgs'],
-    'class_weight':[{0:1, 1:5}, {0:1, 1:7}, {0:1, 1:9}],
-    'random_state':[2020]
+    'class_weight':[{0:1, 1:5}, {0:1, 1:7}, {0:1, 1:9}]
 }
 
 param_grid_III = {
-    'C': [.001, .01, .1], 
-    'max_iter': [200],
-    'penalty': ['l2'],
-    'solver': ['lbfgs'],
-    'class_weight':[{0:1, 1:6}, {0:1, 1:6.5}, {0:1, 1:7}],
-    'random_state':[2020]
+    'C': [.001, .01, .1],
+    'class_weight':[{0:1, 1:6}, {0:1, 1:6.5}, {0:1, 1:7}]
 }
 
 grid_logistic_adv = GridSearchCV(
-    LogisticRegression(), 
-    param_grid=param_grid_III,
-    scoring=ftwo_scorer, 
-    cv = KFold(5, shuffle=True, random_state=2022)
+    LogisticRegression(
+        max_iter = 200,
+        penalty = 'l2',
+        solver = 'lbfgs',
+        random_state = 2020
+    ), 
+    param_grid = param_grid_III,
+    scoring = ftwo_scorer, 
+    cv = KFold(5, shuffle = True, random_state = 2022)
 )
 
 #%%
@@ -311,7 +298,7 @@ grid_logistic_adv.fit(logistic_X_adv, logistic_y)
 
 #%%
 # Check Results
-pd.DataFrame(grid_logistic_adv.cv_results_).sort_values(by=['rank_test_score'])
+pd.DataFrame(grid_logistic_adv.cv_results_).sort_values(by = ['rank_test_score'])
 
 
 #%%
@@ -342,14 +329,14 @@ myStats.get_score_report(best_fit_logistic, logistic_y_test, logistic_X_test)
 # 'Advanced' model on test data
 myStats.get_score_report(best_fit_logistic_adv, logistic_y_test, logistic_X_test_adv)
 
-# The model 'advanced' is slightly slightly bettter
+# The model 'advanced' is slightly slightly betster
 
 # %%
 # Precision-Recall Plot
 
 myPlots.plot_precision_recall(
     list_classifier = [best_fit_logistic, best_fit_logistic_adv],
-    list_X =[logistic_X_test, logistic_X_test_adv],
+    list_X = [logistic_X_test, logistic_X_test_adv],
     true_y = logistic_y_test,
     list_names = ['Simple Model', 'Adv Model'], 
     pos_label = 1

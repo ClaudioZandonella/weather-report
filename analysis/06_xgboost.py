@@ -31,9 +31,10 @@ from sklearn.model_selection import KFold, GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import utils  # from mycode
-import myStats # from mycode
-import myPlots  # from mycode
+# from mycode
+import utils  
+import myStats
+import myPlots
 
 # get data
 
@@ -42,7 +43,7 @@ d_old = shelve.open("../outputs/01_data_explore")
 df = d_old['df'].copy()
 d_old.close()
 
-# Feature eengieneering
+# Feature engineering
 d_old = shelve.open("../outputs/02_feature_engineering")
 wind_data = d_old['wind_data']
 var_wind = d_old['var_wind']
@@ -65,7 +66,7 @@ for col_name in var_wind:
 
 
 # %%
-# Splite train and train data
+# Split train and train data
 df_train = df[df['Year'] <= 2015].copy()
 df_test = df[df['Year'] > 2015].copy()
 
@@ -138,7 +139,7 @@ fit_xgb = xgb.XGBClassifier(
     scale_pos_weight = 3.5,
     max_depth = 6,
     colsample_bylevel = 0.5,
-    use_label_encoder=False,
+    use_label_encoder = False,
     seed = 2022
     ).fit(xgb_X, xgb_y)
 
@@ -149,14 +150,14 @@ myStats.get_score_report(fit_xgb, xgb_y, xgb_X)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    fit_xgb, xgb_X, xgb_y, name="Initial Model"
+    fit_xgb, xgb_X, xgb_y, name = "Initial Model"
 )
 
 #%%
 #----    04 Grid Search    ----#
 
 # Define f2 as scorer
-ftwo_scorer = make_scorer(fbeta_score, pos_label = 1,  beta=2)
+ftwo_scorer = make_scorer(fbeta_score, pos_label = 1,  beta = 2)
 
 #%%
 # Define grid search
@@ -224,12 +225,12 @@ grid_xgb = GridSearchCV(
         eval_metric = 'aucpr',
         missing = np.nan,
         colsample_bytree = 0.5,
-        use_label_encoder=False,
+        use_label_encoder = False,
         seed = 2022
     ), 
     param_grid = param_grid_VII,
     scoring = ftwo_scorer, 
-    cv = KFold(5, shuffle=True, random_state=2022)
+    cv = KFold(5, shuffle = True, random_state = 2022)
 )
 
 #%%
@@ -239,7 +240,7 @@ grid_xgb.fit(xgb_X, xgb_y)
 
 #%%
 # Check Results
-grid_xgb_result = pd.DataFrame(grid_xgb.cv_results_).sort_values(by=['rank_test_score'])
+grid_xgb_result = pd.DataFrame(grid_xgb.cv_results_).sort_values(by = ['rank_test_score'])
 
 sns.pointplot(data = grid_xgb_result, y = 'mean_test_score', hue = 'param_scale_pos_weight',
               x = 'param_reg_lambda')
@@ -260,7 +261,7 @@ myStats.get_score_report(best_fit_xgb, xgb_y, xgb_X)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    best_fit_xgb, xgb_X, xgb_y, name="Best Model"
+    best_fit_xgb, xgb_X, xgb_y, name = "Best Model"
 )
 
 #%%
@@ -285,7 +286,7 @@ xgb_categ_var_adv = ['Location', 'RainToday']
 
 # %%
 # Different Numerical variables to include in the model
-# Include variables coded as Diff to riduce collinearity
+# Include variables coded as Diff to reduce collinearity
 # Include wind directions as Cos and Sin
 xgb_numeric_var_adv = [
     'MaxMinDiff', 'MaxTemp', 
@@ -336,7 +337,7 @@ fit_xgb_adv = xgb.XGBClassifier(
     scale_pos_weight = 3.5,
     max_depth = 6,
     colsample_bylevel = 0.5,
-    use_label_encoder=False,
+    use_label_encoder = False,
     seed = 2022
     ).fit(xgb_X_adv, xgb_y)
 
@@ -347,7 +348,7 @@ myStats.get_score_report(fit_xgb_adv, xgb_y, xgb_X_adv)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    fit_xgb_adv, xgb_X_adv, xgb_y, name="Initial Model"
+    fit_xgb_adv, xgb_X_adv, xgb_y, name = "Initial Model"
 )
 
 #%%
@@ -415,12 +416,12 @@ grid_xgb_adv = GridSearchCV(
         eval_metric = 'aucpr',
         missing = np.nan,
         colsample_bytree = 0.5,
-        use_label_encoder=False,
+        use_label_encoder = False,
         seed = 2022
     ), 
     param_grid = param_grid_VI,
     scoring = ftwo_scorer, 
-    cv = KFold(5, shuffle=True, random_state=2022)
+    cv = KFold(5, shuffle = True, random_state = 2022)
 )
 
 #%%
@@ -430,7 +431,7 @@ grid_xgb_adv.fit(xgb_X_adv, xgb_y)
 
 #%%
 # Check Results
-grid_xgb_result_adv = pd.DataFrame(grid_xgb_adv.cv_results_).sort_values(by=['rank_test_score'])
+grid_xgb_result_adv = pd.DataFrame(grid_xgb_adv.cv_results_).sort_values(by = ['rank_test_score'])
 
 sns.pointplot(data = grid_xgb_result_adv, y = 'mean_test_score', x = 'param_scale_pos_weight',
               hue = 'param_gamma')
@@ -451,7 +452,7 @@ myStats.get_score_report(best_fit_xgb_adv, xgb_y, xgb_X_adv)
 # %%
 # Precision-Recall Plot
 display = PrecisionRecallDisplay.from_estimator(
-    best_fit_xgb_adv, xgb_X_adv, xgb_y, name="Best Model"
+    best_fit_xgb_adv, xgb_X_adv, xgb_y, name = "Best Model"
 )
 
 
@@ -474,14 +475,14 @@ myStats.get_score_report(best_fit_xgb, xgb_y_test, xgb_X_test)
 # 'Advanced' model on test data
 myStats.get_score_report(best_fit_xgb_adv, xgb_y_test, xgb_X_test_adv)
 
-# The model 'advanced' is slightly slightly bettter
+# The model 'advanced' is slightly slightly better
 
 # %%
 # Precision-Recall Plot
 
 myPlots.plot_precision_recall(
     list_classifier = [best_fit_xgb, best_fit_xgb_adv],
-    list_X =[xgb_X_test, xgb_X_test_adv],
+    list_X = [xgb_X_test, xgb_X_test_adv],
     true_y = xgb_y_test,
     list_names = ['Simple Model', 'Adv Model'], 
     pos_label = 1
