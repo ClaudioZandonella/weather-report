@@ -49,5 +49,8 @@ To run the analysis:
     Note that Python 3.10 is required.
 
 2. Run each `.py` script in the `analysis/` directory following the numerical order.
+
+    Note that files are intended to be used in an interactive session. If you prefer to run all scripts from terminal, the working directory is required to be `analysis/`.
+
 3. Open the `documents/report.ipynb` to create the analysis report.
 
