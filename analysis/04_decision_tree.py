@@ -158,7 +158,7 @@ grid_tree = GridSearchCV(
 )
 
 #%%
-%%time
+## %%time
 grid_tree.fit(tree_X, tree_y)
 
 
@@ -314,7 +314,7 @@ grid_tree_adv = GridSearchCV(
 )
 
 #%%
-%%time
+## %%time
 grid_tree_adv.fit(tree_X_adv, tree_y)
 
 

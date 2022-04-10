@@ -63,7 +63,7 @@ print(forest_X_test.shape)
 print(forest_y_test.shape)
 
 # %%
-%%time
+##%%time
 
 #----    02 Fit Model    ----#
 
@@ -141,7 +141,7 @@ ensemble_forests_VI = myStats.get_grid_forests( # to allow fast compilation
 
 #%%
 
-%%time
+## %%time
 # No  big improvements after 350
 my_range = range(360, 400 + 1, 20)
 oobf2_rates = myStats.get_oobf2_rates(ensemble_forests_VI, my_range, forest_X, forest_y)
@@ -152,7 +152,7 @@ myPlots.plot_oobf2(oobf2_rates)
 
 # %%
 
-%%time
+## %%time
 #----    04 Best Model    ----#
 
 # 'max_depth': 11;    'class_weight': {0:1, 1:7}; 'max_features' = 40
@@ -196,7 +196,7 @@ print(forest_X_test_adv.shape)
 print(forest_y_test.shape)
 
 # %%
-%%time
+## %%time
 
 #----    06 Fit Model Advanced    ----#
 
@@ -275,7 +275,7 @@ ensemble_forests_VI = myStats.get_grid_forests( # to allow fast compilation
     )
 #%%
 
-%%time
+## %%time
 # No  big improvements after 350
 my_range = range(360, 400 + 1, 20)
 oobf2_rates = myStats.get_oobf2_rates(ensemble_forests_VI, my_range, forest_X, forest_y)
@@ -286,7 +286,7 @@ myPlots.plot_oobf2(oobf2_rates)
 
 # %%
 
-%%time
+## %%time
 #----    08 Best Model    ----#
 
 # 'max_depth': 12;    'class_weight': {0:1, 1:7}; 'max_features' = 40

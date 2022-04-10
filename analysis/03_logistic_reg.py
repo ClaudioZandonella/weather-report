@@ -155,7 +155,7 @@ grid_logistic = GridSearchCV(
 )
 
 #%%
-%%time
+## %%time
 grid_logistic.fit(logistic_X, logistic_y)
 
 
@@ -292,7 +292,7 @@ grid_logistic_adv = GridSearchCV(
 )
 
 #%%
-%%time
+## %%time
 grid_logistic_adv.fit(logistic_X_adv, logistic_y)
 
 

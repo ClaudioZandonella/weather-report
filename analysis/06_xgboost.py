@@ -234,7 +234,7 @@ grid_xgb = GridSearchCV(
 )
 
 #%%
-%%time
+## %%time
 grid_xgb.fit(xgb_X, xgb_y)
 
 
@@ -425,7 +425,7 @@ grid_xgb_adv = GridSearchCV(
 )
 
 #%%
-%%time
+## %%time
 grid_xgb_adv.fit(xgb_X_adv, xgb_y)
 
 
