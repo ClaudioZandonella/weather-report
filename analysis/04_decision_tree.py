@@ -397,7 +397,7 @@ myStats.get_feature_importance(
 #----    10 End Tree    ----#
 
 # Save Objects
-d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '04_decision_tree04_decision_tree'))
+d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '04_decision_trees'))
 
 # Training Data
 d['tree_X'] = tree_X
