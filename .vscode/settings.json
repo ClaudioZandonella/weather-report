@@ -1,5 +1,9 @@
 {
     "python.analysis.extraPaths": [
         "./mycode"
+    ],
+    "cSpell.words": [
+        "collinearity",
+        "interpretability"
     ]
 }

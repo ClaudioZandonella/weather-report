@@ -12,6 +12,7 @@ matplotlib = "*"
 scipy = "*"
 sklearn = "*"
 xgboost = "*"
+nbconvert = "*"
 
 [dev-packages]
 ipykernel = "*"
