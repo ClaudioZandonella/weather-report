@@ -1,7 +1,6 @@
 # Ignore 
 
 mycode/__pycache__/
-documents/*.html
 
 # macOS utils files
 .DS_Store
