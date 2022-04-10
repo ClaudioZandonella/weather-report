@@ -1,6 +1,6 @@
 # Weather Report
 
-In this repository, we collect the materials regarding the project “*Weather Report.*”. The aim of the analysis is to predict whether it will rain tomorrow.
+In this repository, we collect the materials regarding the project “*Weather Report*”. The aim of the analysis is to predict whether it will rain tomorrow.
 
 ## Repository Structure
 
@@ -8,7 +8,7 @@ The repository is organized in the following directories:
 
 - `analysis/` includes all the `.py` scripts used to run the analysis.
 - `data/` includes the data `weather.csv` used in the analysis.
-- `documents/` includes the report `Report.pdf` with the description of the analysis and discussion of the results.
+- `documents/` includes the report `Report.ipynb` with the description of the analysis and discussion of the results.
 - `mycode/` includes all the `.py` scripts used to define custom functions used in the analysis.
 - `outputs/` used to store the analysis results.
 
@@ -24,7 +24,7 @@ The analysis is structured in the following parts:
 - `06_xgboost.py`: Analysis using XGBoost models.
 - `07_model_comparison.py`: Comparing the different models.
 
-A detailed description of all the analysis steps and results is provided in the report `documents/Report.pdf`
+A detailed description of all the analysis steps and results is provided in the report `documents/Report.ipynb`
 
 ## My Code
 

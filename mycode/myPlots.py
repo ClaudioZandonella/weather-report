@@ -30,12 +30,37 @@ def plot_descriptive(data, columns, outcome = None):
         axes[i%n_row][i//n_row].set_title(f'{col_name}', fontsize=13);
         plt.subplots_adjust(hspace=0.45)
 
+#----    plot_categorical    ----#
+def plot_categorical(data, columns, outcome = None):
+    '''
+    Plot bar plot of categoricala variables
+    '''
+
+    n_var = len(columns)
+    n_row = (n_var + 1)//2
+
+    fig, axes = plt.subplots(n_row,2, figsize= (14,n_row*4))
+
+    for i, col_name in enumerate(columns):
+
+        if outcome is not None:
+            plot_data = data[[col_name, outcome]].copy()
+            plot_data.fillna('_NaN', inplace = True)
+            sns.countplot(data = plot_data, x = col_name, hue = outcome, \
+                ax=axes[i%n_row][i//n_row], alpha=0.7, order = sorted(plot_data[col_name].unique()));
+        else:
+            plot_data = data[[col_name]].copy()
+            plot_data.fillna('_NaN', inplace = True)
+            sns.countplot(data = plot_data, x = col_name, color = 'turquoise',\
+                ax=axes[i%n_row][i//n_row], alpha=0.7, order = sorted(plot_data[col_name].unique()));
+        axes[i%n_row][i//n_row].set_title(f'{col_name}', fontsize=13);
+        plt.subplots_adjust(hspace=0.45)
 
 #----    plot_precision_recall    ----#
 
 def plot_precision_recall(list_classifier, list_X, true_y, list_names, pos_label = 1):
 
-    _, ax = plt.subplots(figsize=(7, 5))
+    _, ax = plt.subplots(figsize=(10, 7))
 
     for i in range(len(list_classifier)):
 

@@ -58,10 +58,22 @@ df_train['DiffPrev'] = utils.get_days_diff(df_train, periods = 1)
 df_train['DiffNext'] = utils.get_days_diff(df_train, periods = -1)
 
 # %%
+# Check representativeness test data
+# Numeric columns
+kk =df_test.describe() - df_train.describe()
+
+# %%
+# Categorical columns
+for col_name in df_test.select_dtypes(include=['object']).columns:
+    print(df_test[col_name].value_counts(dropna = False, normalize = True) -\
+        df_train[col_name].value_counts(dropna = False, normalize = True))
+
+# %%
 # Plot descriptive on train data
 col_to_plot = df_train.select_dtypes(include=np.number)\
     .columns.drop(['RainTomorrow01', 'DiffPrev', 'DiffNext'])
 
+# Numeric columns
 myPlots.plot_descriptive(df_train, 
                          columns = col_to_plot, 
                          outcome="RainTomorrow") 
@@ -90,7 +102,7 @@ df_train[object_columns] = df_train[object_columns].fillna('Missing')
 df_train.describe(include = ['object'])
 
 # %%
-# NaN proportion contnous variables
+# NaN proportion numerical variables
 
 numeric_columns = df_train.select_dtypes(include=np.number).columns
 df_train[numeric_columns].isnull().sum() / len(df_train)

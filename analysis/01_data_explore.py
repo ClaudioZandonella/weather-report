@@ -218,7 +218,7 @@ plt.figure(figsize = (20,20))
 sns.heatmap(df.corr().abs(), linewidths = .5, annot = True, fmt = '.2f')\
     .set_title('Absolute Corretlation Value')
 
-# Check high vlaues of correlation
+# Check high values of correlation
 df_corr = df.corr().round(2)
 df_corr[abs(df_corr) > .6]
 

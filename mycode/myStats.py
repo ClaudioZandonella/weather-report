@@ -37,8 +37,15 @@ def get_score_report(classifier, true_y, true_X):
     '''
 
     y_pred = classifier.predict(true_X)
-    print(confusion_matrix(true_y, y_pred))
+    index_matrix = pd.MultiIndex.from_tuples([('True_y', 0), ('True_y', 1)])
+    column_matrix = pd.MultiIndex.from_tuples([('Pred_y', 0), ('pred_y', 1)])
+    matrix = confusion_matrix(true_y, y_pred)
+
+    print('Confusion Matrix')
+    print(pd.DataFrame(matrix, index = index_matrix, columns=column_matrix))
+    print('\nClassification Report')
     print(classification_report(true_y, y_pred))
+    print('\nF2 Score')
     print(get_fbeta_score(true_y, y_pred))
 
     return None
