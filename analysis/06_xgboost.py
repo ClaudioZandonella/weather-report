@@ -17,10 +17,10 @@
 
 #----    Settings    ----#
 
-import sys
+import sys, os
 import shelve
 from time import time
-sys.path.append('../mycode')
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'mycode'))
 
 import numpy as np
 import pandas as pd
@@ -39,12 +39,12 @@ import myPlots
 # get data
 
 # Initial data
-d_old = shelve.open("../outputs/01_data_explore")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '01_data_explore'))
 df = d_old['df'].copy()
 d_old.close()
 
 # Feature engineering
-d_old = shelve.open("../outputs/02_feature_engineering")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '02_feature_engineering'))
 wind_data = d_old['wind_data']
 var_wind = d_old['var_wind']
 d_old.close()
@@ -507,7 +507,7 @@ myStats.get_feature_importance(
 #----    11 End XGBoost    ----#
 
 # Save Objects
-d = shelve.open("../outputs/06_xgboost")
+d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '06_xgboost'))
 
 # Training Data
 d['xgb_X'] = xgb_X

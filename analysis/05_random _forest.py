@@ -16,10 +16,10 @@
 
 #----    Settings    ----#
 
-import sys
+import sys, os
 import shelve
 from time import time
-sys.path.append('../mycode')
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'mycode'))
 
 import numpy as np
 import pandas as pd
@@ -35,7 +35,7 @@ import myPlots
 
 # get data
 
-d_old = shelve.open("../outputs/04_decision_tree")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '04_decision_tree'))
 # Training Data
 forest_X = d_old['tree_X'].copy()
 forest_X_adv = d_old['tree_X_adv'].copy()
@@ -358,7 +358,7 @@ myStats.get_feature_importance(
 #----    10 End Forest    ----#
 
 # Save Objects
-d = shelve.open("../outputs/05_random_forest")
+d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '05_random_forest'))
 
 # Training Data
 d['forest_X'] = forest_X

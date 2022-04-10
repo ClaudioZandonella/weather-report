@@ -16,10 +16,10 @@
 
 #----    Settings    ----#
 
-import sys
+import sys, os
 import shelve
 from time import time
-sys.path.append('../mycode')
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'mycode'))
 
 import numpy as np
 import pandas as pd
@@ -37,7 +37,7 @@ import myPlots
 
 # get data
 
-d_old = shelve.open("../outputs/02_feature_engineering")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '02_feature_engineering'))
 df_train = d_old['df_train'].copy()
 df_test = d_old['df_test'].copy()
 scaler_data = d_old['scaler_data']
@@ -371,7 +371,7 @@ best_coef_adv
 #----    10 End Logistic    ----#
 
 # Save Objects
-d = shelve.open("../outputs/03_logistic_reg")
+d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '03_logistic_reg'))
 
 # Training Data
 d['logistic_X'] = logistic_X

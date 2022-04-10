@@ -13,9 +13,9 @@
 
 #----    Settings    ----#
 
-import sys
+import sys, os
 import shelve
-sys.path.append('../mycode')
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'mycode'))
 
 import numpy as np
 import pandas as pd
@@ -30,7 +30,7 @@ import utils
 
 #----    01 Import data    ----#
 
-df = pd.read_csv("../data/weather.csv")
+df = pd.read_csv(os.path.join(os.path.dirname(sys.path[0]),'data', 'weather.csv'))
 df.drop(['Unnamed: 0'], axis=1, inplace = True)
 df['Date'] = pd.to_datetime(df['Date'])
 df.sort_values(['Location', 'Date'], inplace = True)
@@ -271,7 +271,9 @@ df.describe()
 
 # %%
 # Save Objects
-d = shelve.open("../outputs/01_data_explore")
+d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '01_data_explore'))
 d['df'] = df
 d.close()
 
+
+# %%

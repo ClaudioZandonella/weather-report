@@ -16,10 +16,10 @@
 
 #----    Settings    ----#
 
-import sys
+import sys, os
 import shelve
 from time import time
-sys.path.append('../mycode')
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'mycode'))
 
 import numpy as np
 import pandas as pd
@@ -37,7 +37,7 @@ import myPlots
 
 # get data
 
-d_old = shelve.open("../outputs/02_feature_engineering")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '02_feature_engineering'))
 df_train = d_old['df_train'].copy()
 df_test = d_old['df_test'].copy()
 scaler_data = d_old['scaler_data']
@@ -397,7 +397,7 @@ myStats.get_feature_importance(
 #----    10 End Tree    ----#
 
 # Save Objects
-d = shelve.open("../outputs/04_decision_tree")
+d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '04_decision_tree04_decision_tree'))
 
 # Training Data
 d['tree_X'] = tree_X

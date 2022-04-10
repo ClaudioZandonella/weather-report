@@ -11,10 +11,10 @@
 
 #----    Settings    ----#
 
-import sys
+import sys, os
 import shelve
 from time import time
-sys.path.append('../mycode')
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'mycode'))
 
 import numpy as np
 import pandas as pd
@@ -31,7 +31,7 @@ import myPlots
 
 # Logistic Regression
 
-d_old = shelve.open("../outputs/03_logistic_reg")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '03_logistic_reg'))
 
 # Test Data
 logistic_X_test = d_old['logistic_X_test'].copy()
@@ -47,7 +47,7 @@ d_old.close()
 #%%
 # Decsion Tree
 
-d_old = shelve.open("../outputs/04_decision_tree")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '04_decision_tree'))
 
 # Test Data
 tree_X_test = d_old['tree_X_test'].copy()
@@ -62,7 +62,7 @@ d_old.close()
 #%%
 # Random Forest
 
-d_old = shelve.open("../outputs/05_random_forest")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '05_random_forest'))
 
 # Data are the same of tree models
 
@@ -75,7 +75,7 @@ d_old.close()
 #%%
 # XGBoost
 
-d_old = shelve.open("../outputs/06_xgboost")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '06_xgboost'))
 
 # Test Data
 xgb_X_test = d_old['xgb_X_test'].copy()

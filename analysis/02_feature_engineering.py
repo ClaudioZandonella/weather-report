@@ -14,9 +14,9 @@
 
 #----    Settings    ----#
 
-import sys
+import sys, os
 import shelve
-sys.path.append('../mycode')
+sys.path.append(os.path.join(os.path.dirname(sys.path[0]),'mycode'))
 
 import numpy as np
 import pandas as pd
@@ -31,7 +31,7 @@ import myPlots
 
 # get data
 
-d_old = shelve.open("../outputs/01_data_explore")
+d_old = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '01_data_explore'))
 df = d_old['df'].copy()
 d_old.close()
 
@@ -278,7 +278,7 @@ df_test.info()
 
 # %%
 # Save Objects
-d = shelve.open("../outputs/02_feature_engineering")
+d = shelve.open(os.path.join(os.path.dirname(sys.path[0]),'outputs', '02_feature_engineering'))
 d['df_train'] = df_train
 d['df_test'] = df_test
 d['object_columns'] = object_columns
